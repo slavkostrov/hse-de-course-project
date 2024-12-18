@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 pandas = "^2.2.3"
 openpyxl = "^3.1.5"
+sqlalchemy = "^2.0.36"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -60,7 +61,6 @@ select = [
     "PLW",   # pylint - warning
     "PT",    # flake8-pytest-style
     "PTH",   # flake8-use-pathlib
-    "Q",     # flake8-quotes
     "RET",   # flake8-return
     "RUF",   # Ruff-specific rules
     "S",     # flake8-bandit
@@ -77,6 +77,8 @@ select = [
 ignore = [
     "D100",   # pydocstyle - undocumented-public-module
     "D104",   # pydocstyle - undocumented-public-package
+    "TRY003",
+
 ]
 
 [tool.ruff.lint.per-file-ignores]
