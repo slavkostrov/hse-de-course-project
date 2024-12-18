@@ -10,6 +10,94 @@ python = "^3.12"
 pandas = "^2.2.3"
 
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+ruff = "^0.8.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+preview = true
+
+[tool.ruff.lint]
+fixable = [
+    "ALL",
+]
+select = [
+    "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "BLE",   # flake8-blind-except
+    "C4",    # flake8-comprehensions
+    "C90",   # mccabe
+    "COM",   # flake8-commas
+    "D",     # pydocstyle
+    "DTZ",   # flake8-datetimez
+    "E",     # pycodestyle errors
+    "ERA",   # eradicate
+    "EXE",   # flake8-executable
+    "F",     # pyflakes
+    "FLY",   # flynt
+    "FURB",  # refurb
+    "I",     # isort
+    "ICN",   # flake8-import-conventions
+    "ISC",   # flake8-implicit-str-concat
+    "N",     # pep8-naming
+    "NPY",   # numpy
+    "PD",    # pandas-vet
+    "PERF",  # perflint
+    "PIE",   # flake8-pie
+    "PLC",   # pylint - convention
+    "PLE",   # pylint - error
+    "PLW",   # pylint - warning
+    "PT",    # flake8-pytest-style
+    "PTH",   # flake8-use-pathlib
+    "Q",     # flake8-quotes
+    "RET",   # flake8-return
+    "RUF",   # Ruff-specific rules
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "T10",   # flake8-debugger
+    "T20",   # flake8-print
+    "TCH",   # flake8-type-checking
+    "TID",   # flake8-tidy-imports
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle - warning
+    "YTT",   # flake8-2020
+]
+ignore = [
+    "ANN101", # flake8-annotations - missing-type-self - deprecated
+    "ANN102", # flake8-annotations - missing-type-cls - deprecated
+    "D100",   # pydocstyle - undocumented-public-module
+    "D104",   # pydocstyle - undocumented-public-package
+    "PT004",  # flake8-pytest-style - pytest-missing-fixture-name-underscore - see: https://github.com/astral-sh/ruff/issues/8796
+    "PT005",  # flake8-pytest-style - pytest-incorrect-fixture-name-underscore - see: https://github.com/astral-sh/ruff/issues/8796
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = [
+    "C901", # mccabe - complex-structure
+    "D",    # pydocstyle
+    "S",    # flake8-bandit
+    "SIM",  # flake8-simplify
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false # see: https://github.com/astral-sh/ruff/issues/8796
+mark-parentheses = false    # see: https://github.com/astral-sh/ruff/issues/8796
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
