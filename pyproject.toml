@@ -61,6 +61,7 @@ select = [
     "PLW",   # pylint - warning
     "PT",    # flake8-pytest-style
     "PTH",   # flake8-use-pathlib
+    "Q",     # flake8-quotes
     "RET",   # flake8-return
     "RUF",   # Ruff-specific rules
     "S",     # flake8-bandit

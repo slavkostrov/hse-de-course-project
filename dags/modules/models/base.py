@@ -13,9 +13,11 @@ else:
 DeclarativeBase = declarative_base()
 
 
-class Base(DeclarativeBase):
+class Base:
     """Base class for ORM models definition."""
+
+    __custom_table_name__ = None
 
     @declared_attr
     def __tablename__(cls):  # noqa
-        return f"{TABLE_PREFIX}_{cls.__name__.lower()}"
+        return f"{TABLE_PREFIX}_{cls.__custom_table_name__ or cls.__name__.lower()}"
