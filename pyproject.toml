@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 pandas = "^2.2.3"
+openpyxl = "^3.1.5"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -74,21 +75,12 @@ select = [
     "YTT",   # flake8-2020
 ]
 ignore = [
-    "ANN101", # flake8-annotations - missing-type-self - deprecated
-    "ANN102", # flake8-annotations - missing-type-cls - deprecated
     "D100",   # pydocstyle - undocumented-public-module
     "D104",   # pydocstyle - undocumented-public-package
-    "PT004",  # flake8-pytest-style - pytest-missing-fixture-name-underscore - see: https://github.com/astral-sh/ruff/issues/8796
-    "PT005",  # flake8-pytest-style - pytest-incorrect-fixture-name-underscore - see: https://github.com/astral-sh/ruff/issues/8796
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*" = [
-    "C901", # mccabe - complex-structure
-    "D",    # pydocstyle
-    "S",    # flake8-bandit
-    "SIM",  # flake8-simplify
-]
+"*.ipynb" = ["T201"]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false # see: https://github.com/astral-sh/ruff/issues/8796
