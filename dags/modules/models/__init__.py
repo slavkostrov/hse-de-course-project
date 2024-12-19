@@ -5,6 +5,7 @@ from modules.models.base import Base, DeclarativeBase
 from modules.models.blacklist import BlacklistModel, FactPassportBlacklist, StagingPassportBlacklist
 from modules.models.card import CardModel, DimCard, DimCardHist, StagingCard
 from modules.models.client import ClientModel, DimClient, DimClientHist, StagingClient
+from modules.models.report import FraudReport
 from modules.models.terminal import DimTerminal, DimTerminalHist, StagingTerminal, TerminalModel
 from modules.models.transaction import FactTransaction, StagingTransaction, TransactionModel
 
@@ -31,6 +32,7 @@ __all__ = [
     "DimTerminalHist",
     "FactPassportBlacklist",
     "FactTransaction",
+    "FraudReport",
     "StagingAccount",
     "StagingCard",
     "StagingClient",
