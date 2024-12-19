@@ -11,6 +11,7 @@ pandas = "^2.2.3"
 openpyxl = "^3.1.5"
 sqlalchemy = "^2.0.36"
 pydantic = "^2.10.4"
+psycopg2-binary = "^2.9.10"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -80,7 +81,8 @@ ignore = [
     "D100",   # pydocstyle - undocumented-public-module
     "D104",   # pydocstyle - undocumented-public-package
     "TRY003",
-
+    "RUF002",
+    "D415",
 ]
 
 [tool.ruff.lint.per-file-ignores]

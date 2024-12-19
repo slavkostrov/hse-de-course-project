@@ -22,5 +22,5 @@ class Base:
     __custom_table_name__ = None
 
     @declared_attr
-    def __tablename__(cls):  # noqa
+    def __tablename__(cls) -> str:  # noqa
         return f"{TABLE_PREFIX}_{cls.__custom_table_name__ or cls.__name__.lower()}"
