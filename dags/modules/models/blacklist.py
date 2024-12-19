@@ -31,7 +31,7 @@ class StagingPassportBlacklist(DeclarativeBase, Base):
 class FactPassportBlacklist(DeclarativeBase, Base):
     """Паспорт с фактической информацией о паспортах."""
 
-    __custom_table_name__ = "fact_passport_blacklist"
+    __custom_table_name__ = "dwh_fact_passport_blacklist"
 
     date = Column(DATE, nullable=False, primary_key=True, comment="Дата актуальности данных")
     passport = Column(String(length=11), nullable=False, primary_key=True, comment="Серия и номер паспорта")
