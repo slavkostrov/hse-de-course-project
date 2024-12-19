@@ -14,7 +14,7 @@ class BlacklistModel(BaseModel):
     passport: str = Field(min_length=11, max_length=11)
 
 
-class Blacklist(DeclarativeBase, Base):
+class StagingPassportBlacklist(DeclarativeBase, Base):
     """Таблица с данными о черном списке паспортов, пример данных:
 
     date	    passport
@@ -24,5 +24,14 @@ class Blacklist(DeclarativeBase, Base):
     __custom_table_name__ = "stg_blacklist"
 
     # https://docs.sqlalchemy.org/en/20/faq/ormconfiguration.html#how-do-i-map-a-table-that-has-no-primary-key
+    date = Column(DATE, nullable=False, primary_key=True, comment="Дата актуальности данных")
+    passport = Column(String(length=11), nullable=False, primary_key=True, comment="Серия и номер паспорта")
+
+
+class FactPassportBlacklist(DeclarativeBase, Base):
+    """Паспорт с фактической информацией о паспортах."""
+
+    __custom_table_name__ = "fact_passport_blacklist"
+
     date = Column(DATE, nullable=False, primary_key=True, comment="Дата актуальности данных")
     passport = Column(String(length=11), nullable=False, primary_key=True, comment="Серия и номер паспорта")

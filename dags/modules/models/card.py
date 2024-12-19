@@ -1,9 +1,10 @@
 import datetime
 
 from pydantic import BaseModel, Field
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, func
+from sqlalchemy.orm import relationship
 
-from modules.models.base import Base, DeclarativeBase
+from modules.models.base import TABLE_PREFIX, Base, DeclarativeBase
 
 
 class CardModel(BaseModel):
@@ -24,8 +25,30 @@ class StagingCard(DeclarativeBase, Base):
 
     __custom_table_name__ = "stg_cards"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    card_num = Column(String(19), nullable=False)
+    card_num = Column(String(19), primary_key=True, nullable=False)
     account = Column(String(22), nullable=False)
+
+
+class DimCard(DeclarativeBase, Base):
+    """Таблица с данными о картах."""
+
+    __custom_table_name__ = "dwh_dim_cards"
+
+    card_num = Column(String(19), nullable=False, primary_key=True, unique=True)
+    account = Column(String(22), ForeignKey(f"{TABLE_PREFIX}_dwh_dim_accounts.account"), nullable=False)
     create_dt = Column(DateTime, nullable=False)
     update_dt = Column(DateTime, nullable=True)
+
+    card_account = relationship("DimAccount", back_populates="cards")
+
+
+class DimCardHist(DeclarativeBase, Base):
+    """Таблица с историческими данными о картах."""
+
+    __custom_table_name__ = "dwh_dim_cards_hist"
+
+    card_num = Column(String(19), primary_key=True, nullable=False)
+    account = Column(String(22), nullable=False)
+    effective_from = Column(DateTime, default=func.current_date(), primary_key=True)
+    effective_to = Column(DateTime, nullable=True)
+    deleted_flg = Column(Boolean, nullable=False)
