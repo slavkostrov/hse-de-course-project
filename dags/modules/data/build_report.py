@@ -198,7 +198,7 @@ def get_decreasing_amount_transactions(session: Session, date: datetime.date):
     return [prepare_row(row, name="amount_transactins") for row in query]
 
 
-def save_fraud_report(session, fraud_data):
+def save_fraud_report(session, fraud_data, date):
     """Добавляет запись в таблицу с отчетом."""
     for data in fraud_data:
         report = FraudReport(
@@ -207,6 +207,7 @@ def save_fraud_report(session, fraud_data):
             fio=data.get("fio"),
             phone=data.get("phone"),
             event_type=data.get("event_type"),
+            report_dt=date,
         )
         session.add(report)
 
@@ -228,4 +229,4 @@ def generate_fraud_report(session: Session, date: datetime.date | str) -> None:
         logging.info("check data with %s", report_func.__name__)
         data = report_func(session, date=date)
         logging.info("found %s fraud rows", len(data))
-        save_fraud_report(session, data)
+        save_fraud_report(session, data, date=date)
