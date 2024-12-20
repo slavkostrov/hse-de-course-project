@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 from collections.abc import Sequence
@@ -120,6 +121,6 @@ def backup_data(source_list: Sequence[Source] = DEFAULT_SOURCE_LIST) -> None:
             continue
         _, filename = source.path.rsplit("/", maxsplit=1)
         target_path = f"{DEFAULT_BACKUP_PATH}/{filename}.backup"
-
+        logging.info("backup data %s into %s", source.path, target_path)
         # TODO: поменять на shutil.move, для теста оставил copy
         shutil.copy(source.path, target_path)

@@ -1,3 +1,4 @@
+import logging
 from collections.abc import Sequence
 
 from modules.data.source import DEFAULT_SOURCE_LIST, DimSource, Source
@@ -8,6 +9,7 @@ from sqlalchemy.orm import Session
 
 
 def _load_to_dim(session: Session, dim_source: DimSource) -> None:
+    logging.info("loading into dim table: %s", dim_source)
     staging_table = dim_source.target_table
     dim_table = dim_source.dim_table
 

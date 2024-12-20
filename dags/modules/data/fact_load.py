@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 
 def _load_fact(session: Session, fact_source: FactSource) -> None:
-    logging.info("logging into fact table: %s", fact_source)
+    logging.info("loading into fact table: %s", fact_source)
     query = session.query(fact_source.target_table)
     data_to_insert = [
         {column.name: getattr(row, column.name) for column in fact_source.target_table.__table__.columns}

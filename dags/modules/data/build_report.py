@@ -1,4 +1,5 @@
 import datetime
+import logging
 from typing import Any
 
 from modules.db.utils import provide_session
@@ -217,11 +218,14 @@ def generate_fraud_report(session: Session, date: datetime.date | str) -> None:
         date = datetime.datetime.strptime(date, "%d-%m-%Y").date()  # noqa
 
     date = date or datetime.date.today()
+    logging.info("start building fraud report")
     for report_func in (
         get_invalid_passport_transactions,
         get_invalid_account_transactions,
         get_cross_city_transactions,
         get_decreasing_amount_transactions,
     ):
+        logging.info("check data with %s", report_func.__name__)
         data = report_func(session, date=date)
+        logging.info("found %s fraud rows", len(data))
         save_fraud_report(session, data)

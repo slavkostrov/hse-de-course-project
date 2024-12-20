@@ -1,3 +1,4 @@
+import logging
 from collections.abc import Sequence
 
 from modules.data.source import DEFAULT_SOURCE_LIST, DimSource, Source
@@ -7,6 +8,7 @@ from sqlalchemy.orm import Session
 
 
 def _load_to_dim_hist(session: Session, dim_source: DimSource) -> None:
+    logging.info("loading into dim hist table: %s", dim_source)
     dim_table = dim_source.dim_table
     dim_hist_table = dim_source.dim_hist_table
 
