@@ -26,6 +26,7 @@ session_factory = sessionmaker(bind=engine)
 Session = scoped_session(session_factory)
 
 
+# TODO: можно использовать airflow connection
 def provide_session(func: callable) -> callable:
     """Provide session decorator."""
 

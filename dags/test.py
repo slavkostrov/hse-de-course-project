@@ -40,6 +40,7 @@ with DAG(
     backup_data_operator = PythonOperator(
         task_id="backup_data",
         python_callable=backup_data,
+        op_kwargs={"date": "{{ params.get('date', ds) }}"},
     )
 
     load_dim_operator = PythonOperator(

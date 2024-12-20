@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import shutil
@@ -113,14 +114,19 @@ DEFAULT_SOURCE_LIST = (
 )
 
 
-def backup_data(source_list: Sequence[Source] = DEFAULT_SOURCE_LIST) -> None:
+def backup_data(source_list: Sequence[Source] = DEFAULT_SOURCE_LIST, date: str | datetime.date | None = None) -> None:
     """Делает бэкап данных."""
-    Path(DEFAULT_BACKUP_PATH).mkdir(parents=True)
+    Path(DEFAULT_BACKUP_PATH).mkdir(parents=True, exist_ok=True)
+    if date and isinstance(date, str):
+        date = datetime.datetime.strptime(date, "%d-%m-%Y").date()  # noqa
+    today = date or datetime.date.today()
+    today = today.strftime("%d%m%Y")
     for source in source_list:
         if source.source_type == "table":
             continue
-        _, filename = source.path.rsplit("/", maxsplit=1)
+        source_path = source.path.format(today=today)
+        _, filename = source_path.rsplit("/", maxsplit=1)
         target_path = f"{DEFAULT_BACKUP_PATH}/{filename}.backup"
-        logging.info("backup data %s into %s", source.path, target_path)
+        logging.info("backup data %s into %s", source_path, target_path)
         # TODO: поменять на shutil.move, для теста оставил copy
-        shutil.copy(source.path, target_path)
+        shutil.copy(source_path, target_path)
