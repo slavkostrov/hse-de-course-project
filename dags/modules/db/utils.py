@@ -10,9 +10,10 @@ creator = functools.partial(
     psycopg2.connect,
     database=db_settings.database,
     host=db_settings.host.get_secret_value(),
-    user=db_settings.user.get_secret_value(),
+    user="hseguest",  # db_settings.user.get_secret_value(),
     password=db_settings.password.get_secret_value(),
     port=db_settings.port,
+    sslmode="require",
 )
 
 engine = sqlalchemy.create_engine(

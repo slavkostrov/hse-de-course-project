@@ -1,3 +1,4 @@
+import datetime
 import logging
 from collections.abc import Sequence
 from typing import Any
@@ -6,26 +7,31 @@ import pandas as pd
 from modules.data.source import DEFAULT_SOURCE_LIST, Source
 from modules.db.utils import provide_session
 from pydantic import BaseModel, ValidationError
-from sqlalchemy import Connection
+from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
 
-def _load_data(source: Source, connection: Connection) -> pd.DataFrame:
+def _load_data(source: Source, connection: Connection, date: datetime.date | str | None = None) -> pd.DataFrame:
     """Загружает данные из файла или из таблицы."""
+    if date and isinstance(date, str):
+        date = datetime.datetime.strptime(date, "%d-%m-%Y").date()  # noqa
+    today = date or datetime.date.today()
+    today = today.strftime("%d%m%Y")
+    path = source.path.format(today=today)
     if source.source_type == "table":
         # TODO: check sql injections
         # TODO: iterate over batches?
-        data = pd.read_sql(f"SELECT * FROM {source.path}", con=connection)  # noqa
+        data = pd.read_sql(f"SELECT * FROM {path}", con=connection)  # noqa
     elif source.source_type == "excel":
-        data = pd.read_excel(source.path)
+        data = pd.read_excel(path)
     elif source.source_type == "txt":
-        data = pd.read_csv(source.path, delimiter=";", decimal=",")
+        data = pd.read_csv(path, delimiter=";", decimal=",")
     else:
         raise RuntimeError(f"unknown source type - {source.source_type}")
-    logging.info("loaded data from: %s", source.path)
+    logging.info("loaded data from: %s", path)
     return data
 
 
@@ -47,11 +53,16 @@ def _validate_records(
 
 
 @provide_session
-def load_data_into_staging(session: Session, source_list: Sequence[Source] = DEFAULT_SOURCE_LIST) -> None:
+def load_data_into_staging(
+    session: Session,
+    source_list: Sequence[Source] = DEFAULT_SOURCE_LIST,
+    date: datetime.date | str | None = None,
+    engine=None,
+) -> None:
     """Загружает сырые данные в Staging."""
     for source in source_list:
         logging.info("start loading source: %s", source)
-        data = _load_data(source, connection=session.connection())
+        data = _load_data(source, connection=session.connection(), date=date)
         records = data.to_dict(orient="records")
         if source.validator is not None:
             logging.info("validate data with %s", source.validator)

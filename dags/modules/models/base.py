@@ -7,7 +7,7 @@ from sqlalchemy.orm import declarative_base, declared_attr
 TABLE_PREFIX_ENV_VAR = "TABLE_PREFIX"
 TABLE_PREFIX = os.environ.get(TABLE_PREFIX_ENV_VAR)
 if not TABLE_PREFIX:
-    raise RuntimeError("env variable 'TABLE_PREFIX_ENV_VAR' not found")
+    raise RuntimeError(f"env variable '{TABLE_PREFIX_ENV_VAR}' not found")
 else:
     logging.debug("found env variable for table_prefix: %s", TABLE_PREFIX)
 

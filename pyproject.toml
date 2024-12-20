@@ -6,13 +6,15 @@ authors = ["Vyacheslav Kostrov <slavkostrov@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-pandas = "^2.2.3"
+python = ">=3.12,<3.13"
+pandas = "1.5.3"
 openpyxl = "^3.1.5"
-sqlalchemy = "^2.0.36"
+sqlalchemy = "1.4.36"
 pydantic = "^2.10.4"
 psycopg2-binary = "^2.9.10"
 pydantic-settings = "^2.7.0"
+apache-airflow = "^2.10.4"
+numpy = "1.26.4"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -90,7 +92,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"*.ipynb" = ["T201"]
+"*.ipynb" = ["T201", "ERA001", "PERF401", "PD901"]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false # see: https://github.com/astral-sh/ruff/issues/8796

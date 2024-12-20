@@ -1,3 +1,7 @@
+import os
+import shutil
+from collections.abc import Sequence
+from pathlib import Path
 from typing import Literal
 
 from modules.models import (
@@ -38,10 +42,6 @@ class Source:
     target_table: type[Base]
     validator: type[BaseModel]
 
-    def __post_init__(self) -> None:
-        """Выставление даты в путь файла."""
-        self.path = self.path.format(today="02032021")  # datetime.date.today().strftime("%d%m%Y"))
-
 
 @dataclass
 class DimSource(Source):
@@ -59,7 +59,9 @@ class FactSource(Source):
 
 
 # TODO: fix
-DEFAULT_DATA_PATH = "../data"
+DEFAULT_DATA_PATH = f"{os.environ.get('AIRFLOW_HOME', '..')}/data"
+DEFAULT_BACKUP_PATH = f"{os.environ.get('AIRFLOW_HOME', '..')}/archive"
+
 DEFAULT_SOURCE_LIST = (
     DimSource(
         path="info.clients",
@@ -108,3 +110,16 @@ DEFAULT_SOURCE_LIST = (
         fact_table=FactPassportBlacklist,
     ),
 )
+
+
+def backup_data(source_list: Sequence[Source] = DEFAULT_SOURCE_LIST) -> None:
+    """Делает бэкап данных."""
+    Path(DEFAULT_BACKUP_PATH).mkdir(parents=True)
+    for source in source_list:
+        if source.source_type == "table":
+            continue
+        _, filename = source.path.rsplit("/", maxsplit=1)
+        target_path = f"{DEFAULT_BACKUP_PATH}/{filename}.backup"
+
+        # TODO: поменять на shutil.move, для теста оставил copy
+        shutil.copy(source.path, target_path)

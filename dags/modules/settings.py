@@ -1,3 +1,5 @@
+import os
+
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings
 
@@ -15,7 +17,7 @@ class PostgresSettings(BaseSettings):
     class Config:
         """Конфиг для настроек."""
 
-        env_file = "../../.env"
+        env_file = f"{os.environ.get('AIRFLOW_HOME', '../..')}/.env"
 
 
 db_settings = PostgresSettings()

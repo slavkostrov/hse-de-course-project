@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, String, func
+from sqlalchemy import Column, Date, DateTime, Integer, String, func
 
 from modules.models.base import Base, DeclarativeBase
 
@@ -8,7 +8,8 @@ class FraudReport(DeclarativeBase, Base):
 
     __custom_table_name__ = "rep_fraud"
 
-    event_dt = Column(Date, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    event_dt = Column(DateTime, nullable=False)
     passport = Column(String(20), nullable=False)
     fio = Column(String, nullable=False)
     phone = Column(String(20), nullable=True)

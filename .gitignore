@@ -170,4 +170,10 @@ cython_debug/
 
 # TODO: use dvc
 data/
+!dags/modules/data/
 .ruff_cache/
+logs/
+airflow.db
+airflow.cfg
+standalone_admin_password.txt
+webserver_config.py

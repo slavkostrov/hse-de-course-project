@@ -1,4 +1,4 @@
-from sqlalchemy import Engine
+from sqlalchemy.engine import Engine
 
 from modules.models.account import AccountModel, DimAccount, DimAccountHist, StagingAccount
 from modules.models.base import Base, DeclarativeBase

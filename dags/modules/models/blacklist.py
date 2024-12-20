@@ -1,7 +1,7 @@
 import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
-from sqlalchemy import DATE, Column, String
+from sqlalchemy import DATE, Column, Integer, String
 
 from modules.models.base import Base, DeclarativeBase
 
@@ -33,5 +33,6 @@ class FactPassportBlacklist(DeclarativeBase, Base):
 
     __custom_table_name__ = "dwh_fact_passport_blacklist"
 
+    id = Column(Integer, autoincrement=True, primary_key=True)
     date = Column(DATE, nullable=False, primary_key=True, comment="Дата актуальности данных")
     passport = Column(String(length=11), nullable=False, primary_key=True, comment="Серия и номер паспорта")
